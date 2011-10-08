@@ -1,0 +1,3 @@
+= MongoidI18nEmbedded
+
+This project rocks and uses MIT-LICENSE.
