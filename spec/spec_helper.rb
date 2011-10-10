@@ -1,3 +1,11 @@
+begin
+  require 'simplecov'
+  SimpleCov.start("rails") do
+    add_filter '/vendor/'
+  end
+rescue
+end
+
 # Configure Rails Envinronment
 ENV["RAILS_ENV"] = "test"
 
@@ -27,4 +35,7 @@ RSpec.configure do |config|
 
   # == Mock Framework
   config.mock_with :rspec
+
+  config.color_enabled = true
+  config.full_backtrace = true
 end
