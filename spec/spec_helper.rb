@@ -1,7 +1,7 @@
 begin
-  require 'simplecov'
+  require "simplecov"
   SimpleCov.start("rails") do
-    add_filter '/vendor/'
+    add_filter "/vendor/"
   end
 rescue
 end
@@ -28,9 +28,9 @@ Capybara.default_selector = :css
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
-  # Remove this line if you don't want RSpec's should and should_not
+  # Remove this line if you don"t want RSpec"s should and should_not
   # methods or matchers
-  require 'rspec/expectations'
+  require "rspec/expectations"
   config.include RSpec::Matchers
 
   # == Mock Framework
@@ -38,4 +38,8 @@ RSpec.configure do |config|
 
   config.color_enabled = true
   config.full_backtrace = true
+
+  config.after :each do    
+    Mongoid.master.collections.select {|c| c.name !~ /^system/ }.each(&:drop)
+  end
 end
