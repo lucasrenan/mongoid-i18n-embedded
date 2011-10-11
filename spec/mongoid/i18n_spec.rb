@@ -9,12 +9,25 @@ describe Mongoid::I18n do
 		Mongoid::I18n.configuration.locales.should eq([:"pt_BR", :es])
 	end
 
-	it "should dynamically generates a InternationalizedData object" do
-		p = Post.new
-		p.internationalized_data.build
+	context "InternationalizedData" do
+		before do
+			@post = Post.new
+			@post.internationalized_data.build
+		end
 
-		p.relation_exists?("internationalized_data").should_not be_false
-		p.relation_exists?("internationalized_data").first.class.should eq(Post::InternationalizedData)		
-		p.relations["internationalized_data"].name.should eq(:internationalized_data)
+		it "should dynamically generates a InternationalizedData object" do
+			@post.relation_exists?("internationalized_data").should_not be_false
+			@post.relation_exists?("internationalized_data").first.class.should eq(Post::InternationalizedData)		
+			@post.relations["internationalized_data"].name.should eq(:internationalized_data)
+		end
+
+		it "should generates fields for InternationalizedData" do
+			i = @post.internationalized_data.build
+
+			i.fields.include?("title").should be_true
+			i.fields.include?("text").should be_true
+			i.respond_to?("title").should be_true
+			i.respond_to?("text").should be_true
+		end
 	end
 end
