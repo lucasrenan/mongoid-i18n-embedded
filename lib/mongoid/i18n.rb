@@ -9,6 +9,7 @@ module Mongoid
 		included do
 			Mongoid::I18n::InternationalizedData.generate(self)
 			embeds_many :internationalized_data, :class_name => "#{self.name}::InternationalizedData"
+      accepts_nested_attributes_for :internationalized_data
 		end
 
 		class << self
