@@ -42,4 +42,8 @@ RSpec.configure do |config|
   config.after :each do    
     Mongoid.master.collections.select {|c| c.name !~ /^system/ }.each(&:drop)
   end
+
+  config.after(:suite) do
+    Mongoid.master.connection.drop_database("#{Mongoid.master.name}")
+  end
 end

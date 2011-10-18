@@ -9,7 +9,7 @@ describe Mongoid::I18n do
 		Mongoid::I18n.configuration.locales.should eq([:"pt_BR", :es])
 	end
 
-	context "InternationalizedData" do
+	describe "InternationalizedData" do
 		before do
 			@post = Post.new
 			@post.internationalized_data.build
@@ -28,6 +28,29 @@ describe Mongoid::I18n do
 			i.fields.include?("text").should be_true
 			i.respond_to?("title").should be_true
 			i.respond_to?("text").should be_true
+		end
+
+		context "current locale" do
+			before do
+				::I18n.locale = :es
+				@post = Post.create
+				@post.internationalized_data.create :language => "pt_BR", :title => "portuguese"
+				@post.internationalized_data.create :language => "es", :title => "spanish"
+			end
+
+			it "should return data related with current locale" do
+				@post.title.should eq("spanish")
+			end
+
+			context "changes" do
+				before do
+					::I18n.locale = "pt_BR"
+				end
+
+				it "should return data related with current locale" do					
+					@post.title.should eq("portuguese")
+				end
+			end
 		end
 	end
 end
