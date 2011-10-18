@@ -1,5 +1,5 @@
-# Provide a simple gemspec so you can easily use your enginex
-# project in your rails apps through git.
+$:.push File.expand_path("../lib", __FILE__)
+
 Gem::Specification.new do |s|
   s.name = "mongoid_i18n_embedded"
   s.summary = "This gem provides functionalities to manipulate internationalized data using Mongoid."
