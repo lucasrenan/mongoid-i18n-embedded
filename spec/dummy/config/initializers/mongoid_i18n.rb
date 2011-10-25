@@ -1,3 +1,3 @@
 Mongoid::I18n.setup do |config|
-	config.locales = [:en, :"pt_BR", :es]
+	config.locales = [:en, :"pt-BR", :es]
 end

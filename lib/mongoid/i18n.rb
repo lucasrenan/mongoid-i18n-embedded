@@ -26,17 +26,17 @@ module Mongoid
         "#{self.name}::InternationalizedData".constantize.field name, options
 
         define_method(name) do
-          @i18n_data ||= self.internationalized_data.where(:language => ::I18n.locale.to_s).first
-          @i18n_data.nil? ? "" : @i18n_data.send(name)
+          i18n_data ||= self.internationalized_data.where(:language => ::I18n.locale.to_s).first
+          i18n_data.nil? ? "" : i18n_data.send(name)
         end
 
-        # Mongoid::I18n.configuration.locales.each do |l|
-        # 	define_method("#{name}_#{l}") do
-	       #    @i18n_data ||= self.internationalized_data.where(:language => l.to_s).first
-	       #    @i18n_data.nil? ? "" : @i18n_data.send(name)
-	       #  end
-        # end
-
+        Mongoid::I18n.configuration.locales.each do |l|
+          n = "#{name}_#{l.to_s.gsub('-', '_')}"
+          define_method(n) do
+            i18n_data ||= self.internationalized_data.where(:language => l.to_s).first
+            i18n_data.nil? ? "" : i18n_data.send(name)
+          end
+        end
       end
 		end
 
