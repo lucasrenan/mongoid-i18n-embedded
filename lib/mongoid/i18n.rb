@@ -10,6 +10,8 @@ module Mongoid
 			Mongoid::I18n::InternationalizedData.generate(self)
 			embeds_many :internationalized_data, :class_name => "#{self.name}::InternationalizedData"
       accepts_nested_attributes_for :internationalized_data
+
+      after_initialize :generates_internationalized_data
 		end
 
 		class << self
@@ -41,6 +43,12 @@ module Mongoid
 		end
 
 		module InstanceMethods
+			def generates_internationalized_data
+				Mongoid::I18n.configuration.locales.each do |l|
+					internationalized_data.build(:language => l.to_s)
+				end
+			end
 		end
+
 	end
 end

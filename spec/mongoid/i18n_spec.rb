@@ -1,24 +1,31 @@
 require "spec_helper"
 
 describe Mongoid::I18n do
-	it "should provides configuration" do
+	before do
+		@locales = [:"pt-BR", :es]
 		Mongoid::I18n.setup do |config|
-			config.locales = [:"pt-BR", :es]
+			config.locales = @locales
 		end
+	end
 
-		Mongoid::I18n.configuration.locales.should eq([:"pt-BR", :es])
+	it "should provides configuration" do
+		Mongoid::I18n.configuration.locales.should eq(@locales)
 	end
 
 	describe "InternationalizedData" do
 		before do
-			@post = Post.new
-			@post.internationalized_data.build
+			@post = Post.new			
 		end
 
 		it "should dynamically generates a InternationalizedData object" do
-			@post.relation_exists?("internationalized_data").should_not be_false
+			@post.relation_exists?("internationalized_data").should be_true
 			@post.relation_exists?("internationalized_data").first.class.should eq(Post::InternationalizedData)		
 			@post.relations["internationalized_data"].name.should eq(:internationalized_data)
+		end
+
+		it "should generates InternationalizedData objects for each locale setted" do
+			@post.internationalized_data.size.should eq(2)
+			@post.internationalized_data.collect{|i| i.language.to_sym}.sort.should eq(@locales.sort)
 		end
 
 		it "should generates fields for InternationalizedData" do
@@ -32,9 +39,11 @@ describe Mongoid::I18n do
 
     describe "locales" do
       before do 
-        @post = Post.create
-				@post.internationalized_data.create :language => "pt-BR", :title => "portuguese"
-				@post.internationalized_data.create :language => "es", :title => "spanish"
+        @post = Post.new
+				# TODO refactor this approach for a better api
+				@post.internationalized_data.where(:language => "pt-BR").first.title = "portuguese"
+				@post.internationalized_data.where(:language => "es").first.title = "spanish"
+				@post.save
       end
       
       it "should generate accessor for each locale" do
@@ -64,4 +73,5 @@ describe Mongoid::I18n do
 		end
 		
 	end
+
 end
