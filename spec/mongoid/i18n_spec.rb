@@ -10,6 +10,7 @@ describe Mongoid::I18n do
 
 	it "should provides configuration" do
 		Mongoid::I18n.configuration.locales.should eq(@locales)
+		Mongoid::I18n.locales.should eq(@locales)
 	end
 
 	describe "InternationalizedData" do

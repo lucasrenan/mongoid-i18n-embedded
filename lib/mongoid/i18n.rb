@@ -23,6 +23,10 @@ module Mongoid
 			yield(@configuration)
 		end
 
+		def self.locales
+    	Mongoid::I18n.configuration.locales
+    end
+
 		module ClassMethods
 			def internationalized_field(name, options = {})
         "#{self.name}::InternationalizedData".constantize.field name, options
@@ -32,7 +36,7 @@ module Mongoid
           i18n_data.nil? ? "" : i18n_data.send(name)
         end
 
-        Mongoid::I18n.configuration.locales.each do |l|
+        Mongoid::I18n.locales.each do |l|
           n = "#{name}_#{l.to_s.gsub('-', '_')}"
           define_method(n) do
             i18n_data ||= self.internationalized_data.where(:language => l.to_s).first
@@ -44,7 +48,7 @@ module Mongoid
 
 		module InstanceMethods
 			def generates_internationalized_data
-				Mongoid::I18n.configuration.locales.each do |l|
+				Mongoid::I18n.locales.each do |l|
 					internationalized_data.build(:language => l.to_s)
 				end
 			end
