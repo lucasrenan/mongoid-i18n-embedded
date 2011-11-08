@@ -44,6 +44,14 @@ module Mongoid
           end
         end
       end
+
+      def validates_internationalized_fields(*fields)
+        validates_each fields do |record, attr, value|
+          record.internationalized_data.each do |i18n_data|
+            record.errors.add attr, "#{i18n_data.language} cant't be blank." if i18n_data.send(attr).blank?
+          end
+        end
+      end
 		end
 
 		module InstanceMethods

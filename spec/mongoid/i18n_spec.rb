@@ -75,4 +75,13 @@ describe Mongoid::I18n do
 		
 	end
 
+	describe "validation" do
+	  let(:post) { Post.new }
+
+	  it "should validates presence of post title" do
+	    post.save.should eq(false)
+	    post.errors.size.should eq(2)
+	  end
+	end
+
 end
