@@ -48,7 +48,7 @@ module Mongoid
       def validates_internationalized_fields(*fields)
         validates_each fields do |record, attr, value|
           record.internationalized_data.each do |i18n_data|
-            record.errors.add attr, "#{i18n_data.language} cant't be blank." if i18n_data.send(attr).blank?
+            record.errors.add attr, "#{i18n_data.language} #{::I18n.translate('errors.messages.blank')}" if i18n_data.send(attr).blank?            
           end
         end
       end
@@ -57,7 +57,9 @@ module Mongoid
 		module InstanceMethods
 			def generates_internationalized_data
 				Mongoid::I18n.locales.each do |l|
-					internationalized_data.build(:language => l.to_s)
+					if internationalized_data.where(:language => l.to_s).count < 1
+						internationalized_data.build(:language => l.to_s)
+					end
 				end
 			end
 		end
