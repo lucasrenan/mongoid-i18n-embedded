@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors = ["lucas renan", "tiago godinho"]
   s.email = "contato@lucasrenan.com"
   s.homepage = "https://github.com/lucasrenan/mongoid-i18n-embedded"
-  s.version = "0.0.1"
+  s.version = "0.0.2"
   
   s.require_paths = ["lib"]
 
