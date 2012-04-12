@@ -1,0 +1,8 @@
+Description:
+    Copy mongoid_i18n_embedded configuration to your application
+
+Example:
+    rails generate mongoid_i18n_embedded:install
+    
+    This will create:
+        config/initializers/mongoid_i18n_embedded.rb
