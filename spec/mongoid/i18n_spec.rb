@@ -84,4 +84,12 @@ describe Mongoid::I18n do
 	  end
 	end
 
+  describe "locale" do
+    it "should return current locale" do
+      ::I18n.locale = "pt-BR"
+
+      Mongoid::I18n.locale.should eq(:"pt-BR")
+    end
+  end
+
 end

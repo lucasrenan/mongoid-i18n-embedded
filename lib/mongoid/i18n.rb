@@ -27,6 +27,10 @@ module Mongoid
     	Mongoid::I18n.configuration.locales
     end
 
+    def self.locale
+      ::I18n.locale
+    end
+
 		module ClassMethods
 			def internationalized_field(name, options = {})
         "#{self.name}::InternationalizedData".constantize.field name, options
@@ -54,12 +58,10 @@ module Mongoid
       end
 		end
 
-		module InstanceMethods
-			def generates_internationalized_data
-				Mongoid::I18n.locales.each do |l|
-					if internationalized_data.where(:language => l.to_s).count < 1
-						internationalized_data.build(:language => l.to_s)
-					end
+		def generates_internationalized_data
+			Mongoid::I18n.locales.each do |l|
+				if internationalized_data.where(:language => l.to_s).count < 1
+					internationalized_data.build(:language => l.to_s)
 				end
 			end
 		end

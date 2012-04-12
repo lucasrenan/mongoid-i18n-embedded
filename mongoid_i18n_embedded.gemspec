@@ -13,5 +13,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
 
-  s.add_dependency "mongoid", ">= 2.2"
+  s.add_dependency "mongoid", "~> 2.4.8"
 end
